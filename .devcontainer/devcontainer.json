@@ -1,5 +1,5 @@
 {
-  "name": "FEFPAnalysis",
+  "name": "Python Data Project",
 
   "build": {
     "dockerfile": "Dockerfile",
@@ -23,8 +23,7 @@
     "PGUSER": "adam",
 
     "MSSQLHOST": "100.106.55.38",
-    "MSSQLPORT": "1433",
-    "MSSQLUSER": "sa",
+    "MSSQLPORT": "1433"
   },
 
   "customizations": {
@@ -41,5 +40,5 @@
     }
   },
 
-  "postCreateCommand": "uv sync && python --version && uv --version && psql --version && sqlcmd -? >/dev/null && echo 'sqlcmd installed' && quarto --version && uv run marimo --version && gh --version && tailscale version"
+  "postCreateCommand": "bash .devcontainer/post-create.sh"
 }

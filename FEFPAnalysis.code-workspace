@@ -4,5 +4,8 @@
 			"name": "FEFPAnalysis",
 			"path": "."
 		}
-	]
+	],
+	"settings": {
+		"python.defaultInterpreterPath": "/workspaces/FEFPAnalysis/.venv/bin/python"
+	}
 }

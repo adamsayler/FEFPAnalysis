@@ -142,11 +142,57 @@ Compares the totals between column amounts from [analytics].[FteDistFyCpTotal]
 SELECT *
 FROM [analytics].[vwFteDistFyCpTotal];
 
-SELECT 
+WITH UnweightedFteDifferences AS (
+SELECT
     [DistrictId],
     [FiscalYear],
-    ROUND([UnweightedFteSecond] - [UnweightedFteThird], 2) AS [FteDifferenceSecondToThird]
-FROM [analytics].[vwFteDistFyCpTotal];
+
+    ROUND([UnweightedFteThird] - [UnweightedFteSecond], 2)
+        AS [UnweightedFteDifSecondToThird],
+
+    ROUND([UnweightedFteFinal] - [UnweightedFteSecond], 2)
+        AS [UnweightedFteDifSecondToFinal],
+
+    ROUND([UnweightedFteFinal] - [UnweightedFteThird], 2)
+        AS [UnweightedFteDifThirdToFinal],
+
+    ROUND([FesUfteThird] - [FesUfteSecond], 2)
+        AS [FesUfteDifSecondToThird],
+
+    ROUND([FesUfteFinal] - [FesUfteSecond], 2)
+        AS [FesUfteDifSecondToFinal],
+
+    ROUND([FesUfteFinal] - [FesUfteThird], 2)
+        AS [FesUfteDifThirdToFinal],
+
+    ROUND([NonvirtualUfteThird] - [NonvirtualUfteSecond], 2)
+        AS [NonvirtualUfteDifSecondToThird],
+
+    ROUND([NonvirtualUfteFinal] - [NonvirtualUfteSecond], 2)
+        AS [NonvirtualUfteDifSecondToFinal],
+
+    ROUND([NonvirtualUfteFinal] - [NonvirtualUfteThird], 2)
+        AS [NonvirtualUfteDifThirdToFinal]
+
+FROM [analytics].[vwFteDistFyCpTotal]
+),
+UnweightedFtePercentChange AS (
+    SELECT
+     ud.[DistrictId],
+     ud.[FiscalYear],
+     ROUND((ud.[UnweightedFteDifSecondToThird] / dt.[UnweightedFteSecond] ), 6) AS [UfteSecondToThirdPercentChange]
+    FROM UnweightedFteDifferences ud
+    JOIN [analytics].[vwFteDistFyCpTotal] dt
+        ON ud.[DistrictId] = dt.[DistrictId]
+        AND ud.[FiscalYear] = dt.[FiscalYear]
+)
+
+
+SELECT 
+    *
+
+FROM UnweightedFtePercentChange
+;
 
 
 -- SELECT * FROM [analytics].[vwFteByDistrict];
